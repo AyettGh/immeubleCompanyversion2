@@ -54,7 +54,7 @@ def add_to_wishlist(request, product_id):
 
     product = get_object_or_404(Product, id=product_id)
     Wishlist.objects.get_or_create(user=request.user, product=product)
-    return redirect('product_detail', pk=product_id)
+    return redirect('wishlist_view')
 
 
 def remove_from_wishlist(request, wishlist_item_id):
@@ -128,16 +128,3 @@ class LoginView(LoginView):
 class LogoutView(LogoutView):
     template_name = 'ecommerce/logout.html'
     next_page = reverse_lazy('product_list')
-
-from .forms import CustomerCreateForm
-
-def customer_create_view(request):
-    if request.method == 'POST':
-        form = CustomerCreateForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('login')
-    else:
-        form = CustomerCreateForm()
-
-    return render(request, 'ecommerce/signup_customer.html', {'form': form})

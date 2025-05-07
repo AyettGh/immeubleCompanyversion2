@@ -1,13 +1,123 @@
 {% extends 'ecommerce/base.html' %}
 
 {% block content %}
-  <div class="container">
-    <h2>Login</h2>
-    <form method="post">
+  <div class="container login-container">
+    <h2 class="login-title">Login</h2>
+    <form method="post" class="login-form">
       {% csrf_token %}
       {{ form.as_p }}
-      <button type="submit" class="btn btn-primary">Login</button>
-      <a href="{% url 'signup' %}" class="btn btn-link">Don't have an account? Sign Up</a>
+      <button type="submit" class="login-btn">Login</button>
+      <a href="{% url 'signup' %}" class="signup-link">Don't have an account? Sign Up</a>
     </form>
   </div>
+
+  <style>
+    /* Main container */
+    .login-container {
+      max-width: 500px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Title */
+    .login-title {
+      color: #254d4d;  /* Using your main color for title */
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    /* Form elements */
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Form paragraphs (from as_p) */
+    .login-form p {
+      margin-bottom: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    /* Labels */
+    .login-form label {
+      font-weight: 500;
+      color: #254d4d;  /* Using your main color for labels */
+    }
+
+    /* Input fields */
+    .login-form input {
+      padding: 12px 16px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .login-form input:focus {
+      outline: none;
+      border-color: #254d4d;  /* Using your main color for focus */
+      box-shadow: 0 0 0 3px rgba(37, 77, 77, 0.1);  /* Matching shadow */
+    }
+
+    /* Login button */
+    .login-btn {
+      background-color: #254d4d;  /* Your specified color */
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .login-btn:hover {
+      background-color: #1a3a3a;  /* Darker shade for hover */
+    }
+
+    /* Signup link */
+    .signup-link {
+      text-align: center;
+      color: #254d4d;  /* Using your main color */
+      text-decoration: none;
+      margin-top: -0.5rem;
+      transition: color 0.3s;
+      font-weight: 500;
+    }
+
+    .signup-link:hover {
+      color: #1a3a3a;  /* Darker shade for hover */
+      text-decoration: underline;
+    }
+
+    /* Error messages */
+    .errorlist {
+      color: #d32f2f;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+      list-style: none;
+      padding-left: 0;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 576px) {
+      .login-container {
+        margin: 1rem;
+        padding: 1.5rem;
+      }
+      
+      .login-title {
+        font-size: 1.75rem;
+      }
+    }
+  </style>
 {% endblock %}

@@ -1,53 +1,130 @@
 {% extends 'ecommerce/base.html' %}
 
-{% block content %}
-<div class="container">
-    <h2>Product List</h2>
-    <form method="get" class="form-inline mb-3">
-        <input type="text" name="search" value="{{ search_query }}" class="form-control mr-2" placeholder="Search">
-        <select name="category" class="form-control mr-2">
-            <option value="">All Categories</option>
-            {% for category in categories %}
-                <option value="{{ category.id }}" {% if selected_category == category.id|stringformat:"s" %}selected{% endif %}>{{ category.name }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit" class="btn btn-primary">Search</button>
-    </form>
+{% block title %}Our Products - FURNART{% endblock %}
 
-    <div class="row">
-        {% for product in products %}
+{% block content %}
+<section class="hero-section">
+    <div class="container">
+        <div class="hero-content slide-up">
+            <h1 class="hero-title">INNOVATE CREATIVE <br>DESIGN</h1>
+            <p class="hero-subtitle">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut</p>
+            <a href="#products" class="btn btn-primary">SHOP NOW</a>
+        </div>
+    </div>
+    <div class="hero-image"></div>
+</section>
+
+<section id="products" class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5 fade-in">OUR PRODUCTS</h2>
+        
+        <form method="get" class="row g-3 mb-5 fade-in">
+            <div class="col-md-6">
+                <input type="text" name="search" value="{{ search_query }}" class="form-control" placeholder="Search">
+            </div>
             <div class="col-md-4">
-                <div class="card">
-                    {% if product.image %}
-                        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-                    {% else %}
-                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="No image available">
-                    {% endif %}
-                    <div class="card-body">
-                        <h5 class="card-title">{{ product.name }}</h5>
-                        <p class="card-text">{{ product.description|truncatewords:20 }}</p>
-                        <a href="{% url 'product_detail' product.pk %}" class="btn btn-primary">View Details</a>
-                        
-                        <!-- Add to Wishlist Button -->
-                        {% if request.user.is_authenticated %}
-                            {% if product in request.user.wishlist_items.all %}
-                                <a href="{% url 'remove_from_wishlist' product.id %}" class="btn btn-danger">Remove from Wishlist</a>
+                <select name="category" class="form-select">
+                    <option value="">All Categories</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}" {% if selected_category == category.id|stringformat:"s" %}selected{% endif %}>{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Search</button>
+            </div>
+        </form>
+
+        <!-- Product Grid -->
+        <div class="row">
+            {% for product in products %}
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4 d-flex">
+                    <div class="card product-card w-100">
+                        <div class="product-img-container">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" class="card-img-top product-img" alt="{{ product.name }}">
                             {% else %}
-                                <a href="{% url 'add_to_wishlist' product.id %}" class="btn btn-secondary">Add to Wishlist</a>
+                                <img src="https://via.placeholder.com/300" class="card-img-top product-img" alt="No image available">
                             {% endif %}
-                        {% else %}
-                            <a href="{% url 'login' %}" class="btn btn-info">Login to add to Wishlist</a>
-                        {% endif %}
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title product-title">{{ product.name }}</h5>
+                            <p class="card-text text-muted flex-grow-1">{{ product.description|truncatewords:15 }}</p>
+                            <div class="d-flex justify-content-between align-items-end mt-auto">
+                                <a href="{% url 'product_detail' product.pk %}" class="btn btn-sm btn-primary">View</a>
+                                
+                                <!-- Wishlist Button -->
+                                {% if request.user.is_authenticated %}
+                                    {% if product in request.user.wishlist_items.all %}
+                                        <a href="{% url 'remove_from_wishlist' product.id %}" class="btn btn-sm btn-danger">
+                                            <i class="fas fa-heart"></i>
+                                        </a>
+                                    {% else %}
+                                        <a href="{% url 'add_to_wishlist' product.id %}" class="btn btn-sm btn-secondary">
+                                            <i class="far fa-heart"></i>
+                                        </a>
+                                    {% endif %}
+                                {% else %}
+                                    <a href="{% url 'login' %}" class="btn btn-sm btn-secondary">
+                                        <i class="far fa-heart"></i>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
+</section>
 
-    <div class="pagination">
-        {% for page_num in products.paginator.page_range %}
-            <a href="?page={{ page_num }}" class="btn btn-link {% if products.number == page_num %}active{% endif %}">{{ page_num }}</a>
-        {% endfor %}
-    </div>
-</div>
+<style>
+    .product-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        transition: transform 0.3s, box-shadow 0.3s;
+        border: none;
+    }
+    
+    .product-img-container {
+        height: 200px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f9fa;
+    }
+    
+    .product-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        transition: transform 0.5s;
+    }
+    
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .product-card:hover .product-img {
+        transform: scale(1.05);
+    }
+    
+    .card-body {
+        padding: 1.25rem;
+    }
+    
+    .product-title {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    
+    .card-text {
+        font-size: 0.875rem;
+        margin-bottom: 1rem;
+    }
+</style>
 {% endblock %}

@@ -1,13 +1,123 @@
 {% extends 'ecommerce/base.html' %}
 
 {% block content %}
-  <div class="container">
-    <h2>Sign Up</h2>
-    <form method="post">
+  <div class="container signup-container">
+    <h2 class="signup-title">Create Your Account</h2>
+    <form method="post" class="signup-form">
       {% csrf_token %}
       {{ form.as_p }}
-      <button type="submit" class="btn btn-primary">Sign Up</button>
-      <a href="{% url 'login' %}" class="btn btn-link">Already have an account? Login</a>
+      <button type="submit" class="signup-btn">Sign Up</button>
+      <a href="{% url 'login' %}" class="login-link">Already have an account? Login</a>
     </form>
   </div>
+
+  <style>
+    /* Main container */
+    .signup-container {
+      max-width: 500px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Title */
+    .signup-title {
+      color: #254d4d;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    /* Form elements */
+    .signup-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Form paragraphs (from as_p) */
+    .signup-form p {
+      margin-bottom: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    /* Labels */
+    .signup-form label {
+      font-weight: 500;
+      color: #254d4d;
+    }
+
+    /* Input fields */
+    .signup-form input {
+      padding: 12px 16px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .signup-form input:focus {
+      outline: none;
+      border-color: #254d4d;
+      box-shadow: 0 0 0 3px rgba(37, 77, 77, 0.1);
+    }
+
+    /* Signup button */
+    .signup-btn {
+      background-color: #254d4d;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .signup-btn:hover {
+      background-color: #1a3a3a;
+    }
+
+    /* Login link */
+    .login-link {
+      text-align: center;
+      color: #254d4d;
+      text-decoration: none;
+      margin-top: -0.5rem;
+      transition: color 0.3s;
+      font-weight: 500;
+    }
+
+    .login-link:hover {
+      color: #1a3a3a;
+      text-decoration: underline;
+    }
+
+    /* Error messages */
+    .errorlist {
+      color: #d32f2f;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+      list-style: none;
+      padding-left: 0;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 576px) {
+      .signup-container {
+        margin: 1rem;
+        padding: 1.5rem;
+      }
+      
+      .signup-title {
+        font-size: 1.75rem;
+      }
+    }
+  </style>
 {% endblock %}
